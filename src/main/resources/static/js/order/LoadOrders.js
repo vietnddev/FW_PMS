@@ -3,7 +3,12 @@ function loadOrders(pageSize, pageNum) {
     let params = {
         pageSize: pageSize,
         pageNum: pageNum,
-        txtSearch : $('#txtFilter').val()
+        txtSearch: $('#txtFilter').val(),
+        groupCustomerId: $('#groupCustomerFilter').val(),
+        orderStatusId: $('#orderStatusFilter').val(),
+        paymentMethodId: $('#paymentMethodFilter').val(),
+        branchId: $('#branchFilter').val(),
+        salesChannelId: $('#salesChannelFilter').val()
     }
     $.get(apiURL, params, function (response) {//dùng Ajax JQuery để gọi xuống controller
         if (response.status === "OK") {

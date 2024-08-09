@@ -87,7 +87,7 @@
                                                             <td th:text="${list.note}"></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="7"></td>
+                                                            <td colspan="8"></td>
                                                             <td th:text="${orderDetail.totalAmount != null} ? ${#numbers.formatDecimal (orderDetail.totalAmount, 0, 'COMMA', 0, 'NONE')} + ' đ' : '-'" class="text-right font-weight-bold"></td>
                                                             <td></td>
                                                         </tr>
@@ -444,8 +444,8 @@
                                 window.location.reload();
                             }
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            showErrorModal("Could not connect to the server");
+                        error: function (xhr, textStatus, errorThrown) {
+                            showErrorModal($.parseJSON(xhr.responseText).message);
                         }
                     });
                     return
@@ -466,8 +466,9 @@
                             alert("Tạo phiếu xuất kho thành công!");
                             $("#confirmModal").modal("hide");
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            showErrorModal("Could not connect to the server");
+                        error: function (xhr, textStatus, errorThrown) {
+                            $("#confirmModal").modal("hide");
+                            showErrorModal($.parseJSON(xhr.responseText).message);
                         }
                     });
                 }

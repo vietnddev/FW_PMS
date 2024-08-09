@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,7 @@ public class OrderController extends BaseController {
                                                      @RequestParam(value = "paymentMethodId", required = false) Integer pPaymentMethodId,
                                                      @RequestParam(value = "orderStatusId", required = false) Integer pOrderStatusId,
                                                      @RequestParam(value = "salesChannelId", required = false) Integer pSalesChannelId,
+                                                     @RequestParam(value = "groupCustomerId", required = false) Integer pGroupCustomerId,
                                                      @RequestParam(value = "sellerId", required = false) Integer pSellerId,
                                                      @RequestParam(value = "customerId", required = false) Integer pCustomerId,
                                                      @RequestParam(value = "branchId", required = false) Integer pBranchId,
@@ -54,7 +56,7 @@ public class OrderController extends BaseController {
                                                      @RequestParam("pageSize") int pageSize,
                                                      @RequestParam("pageNum") int pageNum) {
         try {
-            Page<OrderDTO> orderPage = orderService.findAll(pageSize, pageNum - 1, pTxtSearch, pOrderId, pPaymentMethodId, pOrderStatusId, pSalesChannelId, pSellerId, pCustomerId, pBranchId, null, null, null);
+            Page<OrderDTO> orderPage = orderService.findAll(pageSize, pageNum - 1, pTxtSearch, pOrderId, pPaymentMethodId, pOrderStatusId, pSalesChannelId, pSellerId, pCustomerId, pBranchId, pGroupCustomerId, null, null, null);
             return success(orderPage.getContent(), pageNum, pageSize, orderPage.getTotalPages(), orderPage.getTotalElements());
         } catch (RuntimeException ex) {
             throw new AppException(String.format(ErrorCode.SEARCH_ERROR_OCCURRED.getDescription(), "order"), ex);
@@ -99,11 +101,12 @@ public class OrderController extends BaseController {
     @PutMapping("/do-pay/{orderId}")
     @PreAuthorize("@vldModuleSales.updateOrder(true)")
     public AppResponse<String> doPayOrder(@PathVariable("orderId") Integer orderId,
-                                          @RequestParam(value = "paymentTime", required = false) LocalDateTime paymentTime,
+                                          @RequestParam(value = "paymentTime", required = false) String paymentTime,
                                           @RequestParam("paymentMethod") Integer paymentMethod,
                                           @RequestParam("paymentAmount") Float paymentAmount,
                                           @RequestParam(value = "paymentNote", required = false) String paymentNote) {
-        return success(orderService.doPay(orderId, paymentTime, paymentMethod, paymentAmount, paymentNote));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
+        return success(orderService.doPay(orderId, LocalDateTime.parse(paymentTime, formatter), paymentMethod, paymentAmount, paymentNote));
     }
 
     @GetMapping("/export")

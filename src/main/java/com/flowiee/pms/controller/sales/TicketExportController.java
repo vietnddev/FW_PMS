@@ -55,11 +55,7 @@ public class TicketExportController extends BaseController {
     @PostMapping("/create-draft")
     @PreAuthorize("@vldModuleSales.exportGoods(true)")
     public AppResponse<TicketExport> createDraftTicket(@RequestBody(required = false) OrderDTO order) {
-        try {
-            return success(ticketExportService.save(order));
-        } catch (RuntimeException ex) {
-            throw new AppException(String.format(ErrorCode.CREATE_ERROR_OCCURRED.getDescription(), "ticket export"), ex);
-        }
+        return success(ticketExportService.save(order));
     }
 
     @Operation(summary = "Update ticket")

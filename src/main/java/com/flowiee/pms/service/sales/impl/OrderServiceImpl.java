@@ -48,13 +48,13 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     public List<OrderDTO> findAll() {
-        return this.findAll(-1, -1, null, null, null, null, null, null, null, null, null, null, null).getContent();
+        return this.findAll(-1, -1, null, null, null, null, null, null, null, null, null, null, null, null).getContent();
     }
 
     @Override
     public Page<OrderDTO> findAll(int pPageSize, int pPageNum, String pTxtSearch, Integer pOrderId, Integer pPaymentMethodId,
                                   Integer pOrderStatusId, Integer pSalesChannelId, Integer pSellerId, Integer pCustomerId,
-                                  Integer pBranchId, LocalDateTime pOrderTimeFrom, LocalDateTime pOrderTimeTo, String pSortBy) {
+                                  Integer pBranchId, Integer pGroupCustomerId, LocalDateTime pOrderTimeFrom, LocalDateTime pOrderTimeTo, String pSortBy) {
         Pageable pageable = Pageable.unpaged();
         if (pPageSize >= 0 && pPageNum >= 0) {
             pageable = PageRequest.of(pPageNum, pPageSize, Sort.by(pSortBy != null ? pSortBy : "orderTime").descending());
@@ -65,7 +65,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         if (pOrderTimeTo == null) {
             pOrderTimeTo = LocalDateTime.of(2100, 12, 1, 0, 0, 0);
         }
-        Page<Order> orders = orderRepository.findAll(pTxtSearch, pOrderId, pPaymentMethodId, pOrderStatusId, pSalesChannelId, pSellerId, pCustomerId, pBranchId, pOrderTimeFrom, pOrderTimeTo, pageable);
+        Page<Order> orders = orderRepository.findAll(pTxtSearch, pOrderId, pPaymentMethodId, pOrderStatusId, pSalesChannelId, pSellerId, pCustomerId, pBranchId, pGroupCustomerId, pOrderTimeFrom, pOrderTimeTo, pageable);
         return new PageImpl<>(OrderDTO.fromOrders(orders.getContent()), pageable, orders.getTotalElements());
     }
 

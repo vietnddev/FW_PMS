@@ -29,8 +29,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
            "and (:orderStatusId is null or o.trangThaiDonHang.id=:orderStatusId) " +
            "and (:salesChannelId is null or o.kenhBanHang.id=:salesChannelId) " +
            "and (:sellerId is null or o.nhanVienBanHang.id=:sellerId) " +
-           "and (:customerId is null or o.customer.id=:customerId)" +
-           "and (:branchId is null or a.branch.id = :branchId)" +
+           "and (:customerId is null or o.customer.id=:customerId) " +
+           "and (:branchId is null or a.branch.id = :branchId) " +
+           "and (:groupCustomerId is null or 1=1) " +
            "and ((trunc(o.orderTime) >= trunc(:orderTimeFrom)) and (trunc(o.orderTime) <= trunc(:orderTimeTo)))")
     Page<Order> findAll(@Param("txtSearch") String txtSearch,
                         @Param("orderId") Integer orderId,
@@ -40,6 +41,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                         @Param("sellerId") Integer sellerId,
                         @Param("customerId") Integer customerId,
                         @Param("branchId") Integer branchId,
+                        @Param("groupCustomerId") Integer groupCustomerId,
                         @Param("orderTimeFrom") LocalDateTime orderTimeFrom,
                         @Param("orderTimeTo") LocalDateTime orderTimeTo,
                         Pageable pageable);

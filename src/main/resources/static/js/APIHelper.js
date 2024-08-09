@@ -22,7 +22,7 @@ function downloadCategoryForSelection(element, endpoint) {
     $.get(endpoint, function (response) {
         if (response.status === "OK") {
             $.each(response.data, function (index, d) {
-                element.append('<option value=' + d.id + '>' + d.name + '</option>');
+                element.append(`<option value="${d.id}">${d.name}</option>`);
             });
         }
     }).fail(function () {

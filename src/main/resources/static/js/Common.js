@@ -318,7 +318,7 @@ function setupSearchTool() {
 function clearSearchSelection(element, defaultOption) {
     element.empty();
     if (defaultOption != null) {
-        element.append(`<option>${defaultOption}</option>`);
+        element.append(`<option value="">${defaultOption}</option>`);
     }
 }
 

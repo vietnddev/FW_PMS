@@ -91,11 +91,8 @@ public class TicketExportServiceImpl extends BaseService implements TicketExport
     @Transactional
     @Override
     public TicketExport save(OrderDTO orderDTO) {
-        if (!ObjectUtils.isNotEmpty(orderDTO)) {
-            throw new BadRequestException();
-        }
-        if (orderRepository.findById(orderDTO.getId()).isEmpty()) {
-            throw new BadRequestException();
+        if (!ObjectUtils.isNotEmpty(orderDTO) || orderRepository.findById(orderDTO.getId()).isEmpty()) {
+            throw new BadRequestException("Đơn hàng không tồn tại");
         }
         TicketExport ticketExportSaved = ticketExportRepo.save(TicketExport.builder()
                 .title("Xuất hàng cho đơn " + orderDTO.getCode())

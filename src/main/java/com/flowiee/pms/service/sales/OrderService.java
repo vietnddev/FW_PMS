@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface OrderService extends BaseCurdService<OrderDTO> {
     Page<OrderDTO> findAll(int pageSize, int pageNum, String pTxtSearch, Integer pOrderId, Integer pPaymentMethodId,
                            Integer pOrderStatusId, Integer pSalesChannelId, Integer pSellerId, Integer pCustomerId,
-                           Integer branchId, LocalDateTime pOrderTimeFrom, LocalDateTime pOrderTimeTo, String pSortBy);
+                           Integer pBranchId, Integer pGroupCustomerId, LocalDateTime pOrderTimeFrom, LocalDateTime pOrderTimeTo, String pSortBy);
 
     Optional<OrderDTO> findById(Integer orderId);
 
